@@ -1,21 +1,6 @@
 <script setup lang="ts">
 // import baiduIcon from '~/assets/icon_baidu.svg'
 
-// const icons: Record<string, { src: string; class: string }> = {
-//   baidu: {
-//     src: baiduIcon,
-//     class: 'w-8',
-//   },
-//   google: {
-//     src: 'i-logos:google',
-//     class: 'text-16',
-//   },
-//   bing: {
-//     src: 'i-logos:bing',
-//     class: 'text-10',
-//   },
-// }
-
 interface Engine {
   name: string
   value: string
@@ -59,29 +44,53 @@ function onSearch() {
   window.location.assign(url)
 }
 
-function onSelect(selected: Engine) {
-  const curIndex = engines.value.findIndex(e => e.value === engine.value)
-  const nextIndex = engines.value.findIndex(e => e.value === selected.value)
-  ;[engines.value[curIndex], engines.value[nextIndex]] = [engines.value[nextIndex], engines.value[curIndex]]
-  engine.value = selected.value
-}
+// function onSelect(selected: Engine) {
+//   const curIndex = engines.value.findIndex(e => e.value === engine.value)
+//   const nextIndex = engines.value.findIndex(e => e.value === selected.value)
+//   ;[engines.value[curIndex], engines.value[nextIndex]] = [engines.value[nextIndex], engines.value[curIndex]]
+//   engine.value = selected.value
+// }
 // function onNewShortcut() {
 //   modalVisible.value = true
 // }
 </script>
 
 <template>
-  <div class="relative h-full flex items-center justify-center">
-    <div class="watermask font-mono text-neutral-content">
-      Manday
-    </div>
-    <div>
-      <div>
-        <span v-for="item in engines" :key="item.value" class="badge badge-lg m-1 cursor-pointer select-none" :class="[engine === item.value ? 'badge-primary' : 'badge-ghost']" @click="onSelect(item)">
-          {{ item.name }}
-        </span>
-      </div>
-      <input v-model="keywords" autofocus class="input input-bordered w-[400px] my-2 focus:outline-none focus:border-primary-focus" type="text" placeholder="Keywords" @keyup.enter="onSearch">
+  <div class="h-full pl-12 pr-8">
+    <header class="fixed top-12 left-8 flex items-center">
+      <Logo class="w-12 h-12" />
+      <!-- <span class="ml-8 font-mono font-bold text-xl">Manday</span> -->
+    </header>
+    <div class="pt-5/12">
+      <input v-model="keywords" autofocus class="input input-ghost bg-transparent caret-white w-[400px] my-2 focus:outline-none" type="text" placeholder="搜索" @keyup.enter="onSearch">
+
+      <ul class="platforms">
+        <li style="--code: baidu">
+          Github
+        </li>
+        <li style="--code: baidu">
+          npm
+        </li>
+        <li style="--code: baidu">
+          百度
+        </li>
+        <li style="--code: bing" class="bg-accent text-accent-content">
+          必应
+        </li>
+        <li style="--code: google">
+          谷歌
+        </li>
+        <li style="--code: zhihu">
+          知乎
+        </li>
+        <li style="--code: weibo">
+          微博
+        </li>
+        <li style="--code: bilibili">
+          B站
+        </li>
+      </ul>
+
       <!-- <Shortcuts @add="onNewShortcut" />
       <Modal :open="modalVisible" @cancel="modalVisible = false">
         <template #header>
@@ -107,12 +116,22 @@ function onSelect(selected: Engine) {
 </template>
 
 <style scoped>
-.watermask {
-  position: absolute;
-  top: 0;
-  left: 4rem;
-  font-size: calc(120px + 5vw);
-  user-select: none;
-  letter-spacing: -0.2rem;
+.platforms {
+  display: grid;
+  gap: 0.5rem;
+  grid-template-rows: repeat(2, 80px);
+  grid-template-columns: repeat(5, 80px);
+  grid-template-areas:
+    "baidu zhihu zhihu google weibo"
+    "bing zhihu zhihu bilibili bilibili";
+}
+
+.platforms > li {
+  grid-area: var(--code);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid hsl(var(--pc));
+  border-radius: 1rem;
 }
 </style>

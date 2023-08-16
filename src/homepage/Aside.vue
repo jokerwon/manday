@@ -6,6 +6,7 @@ import { usePoetry } from '~/composables/usePoetry'
 const weatherIcon: Record<string, string> = {
   多云: 'i-wi:day-cloudy',
   晴: 'i-wi:day-sunny',
+  阴: 'i-wi:cloudy',
   阵雨: 'i-wi:night-alt-rain',
   雷阵雨: 'i-wi:day-storm-showers',
   雨: 'i-wi:rain',
@@ -48,7 +49,7 @@ function padZero(num: number) {
       </div>
 
       <div v-if="isFinished">
-        <div class="text-lg">
+        <div class="relative text-xl">
           {{ poetry }}
         </div>
         <div class="w-[max-content] mt-1 mx-auto px-1 py-0 rounded-md text-sm bg-secondary text-secondary-content">

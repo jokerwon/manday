@@ -16,10 +16,18 @@ export default defineConfig({
       },
     }),
     presetDaisy({
-      themes: ['light', 'dark'],
+      themes: [
+        // {
+        //   light: {
+        //     ...require('daisyui/src/theming/themes')['[data-theme=light]'],
+        //     primary: '#3626af',
+        //   },
+        // },
+        // 'light',
+        'emerald',
+        'dark',
+      ],
     }),
   ],
-  transformers: [
-    transformerDirectives(),
-  ],
+  transformers: [transformerDirectives()],
 })
