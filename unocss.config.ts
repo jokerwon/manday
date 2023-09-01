@@ -12,7 +12,8 @@ export default defineConfig({
       },
       collections: {
         weather: () => import('@iconify-json/wi/icons.json').then(i => i.default),
-        logos: () => import('@iconify-json/logos/icons.json').then(i => i.default),
+        // logos: () => import('@iconify-json/logos/icons.json').then(i => i.default),
+        si: () => import('@iconify-json/simple-icons/icons.json').then(i => i.default),
       },
     }),
     presetDaisy({

@@ -30,6 +30,7 @@
   },
   "dependencies": {
     "@iconify-json/logos": "^1.1.34",
+    "@iconify-json/simple-icons": "^1.1.67",
     "@iconify-json/wi": "^1.1.5",
     "@mengjx/jinrishici": "^1.0.1",
     "blueimp-md5": "^2.19.0",

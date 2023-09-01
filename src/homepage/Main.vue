@@ -1,11 +1,7 @@
 <script setup lang="ts">
+import type { Platform } from '~/types'
 import { Themes, useTheme } from '~/composables/useTheme'
 // import baiduIcon from '~/assets/icon_baidu.svg'
-
-interface Platform {
-  name: string
-  code: string
-}
 
 const { theme, setTheme } = useTheme()
 
@@ -13,84 +9,105 @@ const platforms = shallowRef<Platform[]>([
   {
     code: 'baidu',
     name: '百度',
-    // icon: baiduIcon,
-  },
-  {
-    code: 'bing',
-    name: '必应',
-    // icon: 'i-logos:bing',
+    icon: 'i-simple-icons:baidu',
+    homepage: 'https://www.baidu.com',
   },
   {
     code: 'google',
     name: '谷歌',
-    // icon: 'i-logos:google',
+    icon: 'i-simple-icons:google',
+    homepage: 'https://www.google.com',
+  },
+  {
+    code: 'bing',
+    name: '必应',
+    icon: 'i-simple-icons:microsoftbing',
+    homepage: 'https://cn.bing.com',
   },
   {
     code: 'juejin',
     name: '掘金',
+    icon: 'i-simple-icons:juejin',
+    homepage: 'https://juejin.cn',
   },
   {
     code: 'npm',
     name: 'npm',
+    icon: 'i-simple-icons:npm',
+    homepage: 'https://www.npmjs.com',
   },
   {
     code: 'github',
     name: 'Github',
+    icon: 'i-logos:github-icon',
+    homepage: 'https://github.com',
   },
   {
     code: 'zhihu',
     name: '知乎',
+    icon: 'i-simple-icons:zhihu',
+    homepage: 'https://www.zhihu.com',
   },
   {
     code: 'bilibili',
     name: '哔哩哔哩',
+    icon: 'i-simple-icons:bilibili',
+    homepage: 'https://bilibili.com',
   },
   {
     code: 'weibo',
     name: '微博',
+    icon: 'i-simple-icons:sinaweibo',
+    homepage: 'https://weibo.com',
   },
 ])
-const platform = ref(platforms.value[0].code)
+const platform = ref(platforms.value[0])
 const keywords = ref()
 // const modalVisible = ref(false)
 
 function onSearch() {
-  let url: string
-  switch (platform.value) {
-    case 'google':
-      url = `https://www.google.com/search?q=${keywords.value}`
-      break
-    case 'bing':
-      url = `https://cn.bing.com/search?q=${keywords.value}`
-      break
-    case 'juejin':
-      url = `https://juejin.cn/search?query=${keywords.value}`
-      break
-    case 'npm':
-      url = `https://www.npmjs.com/search?q=${keywords.value}`
-      break
-    case 'github':
-      url = `https://github.com/search?q=${keywords.value}&type=repositories`
-      break
-    case 'zhihu':
-      url = `https://www.zhihu.com/search?q=${keywords.value}&type=content`
-      break
-    case 'bilibili':
-      url = `https://search.bilibili.com/all?keyword=${keywords.value}`
-      break
-    case 'weibo':
-      url = `https://s.weibo.com/weibo?q=${keywords.value}`
-      break
-    case 'baidu':
-    default:
-      url = `https://www.baidu.com/s?wd=${keywords.value}`
-      break
+  let url: string = platform.value.homepage
+  if (keywords.value) {
+    switch (platform.value.code) {
+      case 'google':
+        url += `/search?q=${keywords.value}`
+        break
+      case 'bing':
+        url += `/search?q=${keywords.value}`
+        break
+      case 'juejin':
+        url += `/search?query=${keywords.value}`
+        break
+      case 'npm':
+        url += `/search?q=${keywords.value}`
+        break
+      case 'github':
+        url += `/search?q=${keywords.value}&type=repositories`
+        break
+      case 'zhihu':
+        url += `/search?q=${keywords.value}&type=content`
+        break
+      case 'bilibili':
+        url = `https://search.bilibili.com/all?keyword=${keywords.value}`
+        break
+      case 'weibo':
+        url = `https://s.weibo.com/weibo?q=${keywords.value}`
+        break
+      case 'baidu':
+        url += `https://www.baidu.com/s?wd=${keywords.value}`
+        break
+      default:
+        break
+    }
   }
   window.location.assign(url)
 }
 
 function onSelect(selected: Platform) {
-  platform.value = selected.code
+  platform.value = selected
+}
+function onDbclick(p: Platform) {
+  window.open(p.homepage)
 }
 // function onNewShortcut() {
 //   modalVisible.value = true
@@ -141,7 +158,16 @@ function onSelect(selected: Platform) {
       >
 
       <ul class="platforms">
-        <li v-for="p in platforms" :key="p.code" class="badge badge-lg cursor-pointer" :class="{ 'badge-secondary': platform === p.code }" :style="{ '--code': p.code }" @click="onSelect(p)">
+        <li
+          v-for="p in platforms"
+          :key="p.code"
+          class="badge badge-lg select-none cursor-pointer"
+          :class="{ 'badge-secondary': platform.code === p.code }"
+          :style="{ '--code': p.code }"
+          @click="onSelect(p)"
+          @dblclick="onDbclick(p)"
+        >
+          <span class="mr-1" :class="p.icon" />
           {{ p.name }}
         </li>
       </ul>
@@ -173,6 +199,7 @@ function onSelect(selected: Platform) {
 <style scoped>
 .platforms {
   display: flex;
+  flex-wrap: wrap;
   gap: 0.5rem;
   /* display: grid;
   gap: 0.5rem;
