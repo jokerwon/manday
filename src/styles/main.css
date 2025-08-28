@@ -1,20 +1,63 @@
+@font-face {
+  font-family: 'JXZhuoKai';
+  src: url('../assets/jiangxizhuokai.ttf') format('truetype');
+}
+
+:root {
+  /* Base Colors */
+  --color-coral-light: #ff8282;
+  --color-coral-base: #ff6363;
+  --color-mint-base: #bee4d0;
+  --color-mint-light: #dbffcb;
+  --color-text-base: #374151;
+
+  /* Semantic Color Tokens */
+  --color-primary: var(--color-coral-base);
+  --color-primary-light: var(--color-coral-light);
+  --color-secondary: var(--color-mint-base);
+  --color-secondary-light: var(--color-mint-light);
+
+  /* Text Tokens */
+  --color-text-primary: var(--color-text-base);
+  --color-text-secondary: #6b7280;
+  --color-text-muted: #9ca3af;
+  --color-text-on-primary: #ffffff;
+  --color-text-on-secondary: var(--color-text-base);
+
+  /* Background Tokens */
+  --color-bg-primary: #ffffff;
+  --color-bg-secondary: #f9fafb;
+  --color-bg-accent-coral: var(--color-coral-light);
+  --color-bg-accent-mint: var(--color-mint-light);
+
+  /* Interactive States */
+  --color-hover-coral: #ff4545;
+  --color-hover-mint: #a8d5c0;
+  --color-active-coral: #ff2727;
+  --color-active-mint: #92c6a8;
+
+  /* Border Tokens */
+  --color-border-light: #e5e7eb;
+  --color-border-base: #d1d5db;
+  --color-border-accent: var(--color-coral-base);
+
+  /* Status Colors */
+  --color-success: var(--color-mint-base);
+  --color-success-light: var(--color-mint-light);
+  --color-warning: var(--color-coral-light);
+  --color-danger: var(--color-coral-base);
+
+  /* Shadow Tokens */
+  --shadow-coral: 0 4px 6px -1px rgba(255, 99, 99, 0.1);
+  --shadow-mint: 0 4px 6px -1px rgba(190, 228, 208, 0.1);
+  --shadow-base: 0 1px 3px 0 rgba(55, 65, 81, 0.1);
+}
+
 html,
 body,
 #app {
   margin: 0;
   padding: 0;
-}
-
-.btn {
-  @apply px-4 py-1 rounded inline-block
-    bg-teal-600 text-white cursor-pointer
-    hover:bg-teal-700
-    disabled:cursor-default disabled:bg-gray-600 disabled:opacity-50;
-}
-
-.icon-btn {
-  @apply inline-block cursor-pointer select-none
-    opacity-75 transition duration-200 ease-in-out
-    hover:opacity-100 hover:text-teal-600;
-  font-size: 0.9em;
+  background: var(--color-bg-secondary);
+  color: var(--color-text-primary);
 }
