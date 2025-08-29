@@ -55,7 +55,8 @@ const platforms = shallowRef<any[]>([
     homepage: 'https://weibo.com',
   },
 ])
-const platform = ref(platforms.value[0])
+const index = ref(0)
+const platform = computed(() => platforms.value[index.value])
 const keywords = ref()
 
 function onSearch() {
@@ -96,33 +97,50 @@ function onSearch() {
   window.location.assign(url)
 }
 
-function onSelect(selected: Platform) {
-  platform.value = selected
+function onSelect(selected: number) {
+  index.value = selected
 }
-function onDoubleClick(p: Platform) {
+function onDoubleClick(p: any) {
   window.open(p.homepage)
 }
+
+function onKeydown(e: KeyboardEvent) {
+  if (e.altKey) {
+    if (e.key === 'ArrowRight') {
+      onSelect((index.value + 1) % platforms.value.length)
+    }
+    else if (e.key === 'ArrowLeft') {
+      onSelect((index.value + platforms.value.length - 1) % platforms.value.length)
+    }
+  }
+}
+
+onMounted(() => {
+  window.addEventListener('keydown', onKeydown)
+})
+onBeforeUnmount(() => {
+  window.removeEventListener('keydown', onKeydown)
+})
 </script>
 
 <template>
-  <div class="mt-8">
+  <div class="flex flex-col items-center mt-12">
     <input
       v-model="keywords"
       autofocus
-      class="input bg-transparent caret-base-100 w-[400px] my-2 text-primary-content focus:outline-none placeholder:text-primary-content"
+      name="search"
+      class="min-w-[20vw] py-1 text-lg text-center bg-transparent caret-text-primary border-b border-border-base my-2 text-text-primary focus:outline-none placeholder:text-text-muted transition-colors duration-200"
       type="text"
-      placeholder="搜索"
       @keyup.enter="onSearch"
     >
 
-    <ul class="platforms">
+    <ul class="flex flex-wrap gap-4 mt-4 text-text-primary">
       <li
-        v-for="p in platforms"
+        v-for="(p, i) in platforms"
         :key="p.code"
-        class="badge badge-lg select-none cursor-pointer"
-        :class="{ 'badge-secondary': platform.code === p.code }"
-        :style="{ '--code': p.code }"
-        @click="onSelect(p)"
+        class="flex items-center justify-center rounded px-2 py-1 font-semibold select-none cursor-pointer transition-all duration-200 hover:scale-105 hover:shadow-sm hover:bg-primary-light hover:text-text-on-primary"
+        :class="{ 'bg-primary-light text-text-on-primary': platform.code === p.code }"
+        @click="onSelect(i)"
         @dblclick="onDoubleClick(p)"
       >
         <span class="mr-1" :class="p.icon" />
@@ -131,19 +149,3 @@ function onDoubleClick(p: Platform) {
     </ul>
   </div>
 </template>
-
-<style scoped>
-.platforms {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-
-.platforms > li {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid hsl(var(--pc));
-  border-radius: 1rem;
-}
-</style>
